@@ -1,0 +1,8 @@
+{
+	"movement": {
+		"up": "W",
+		"down": "R",
+		"left": "A",
+		"right": "S"
+	}
+}
