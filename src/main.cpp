@@ -7,6 +7,8 @@
 #include "indexes.h"
 #include "Player.hpp"
 
+#include "Skyrmion/debug/DebugLayers.hpp"
+
 int main() {
 	//Load settings file
 	Settings::loadSettings("res/settings.json");
@@ -27,6 +29,8 @@ int main() {
 	MapIndexer treetopMap(&grid, treetopIndex, -1);
 	MapIndexer waterMap(&grid, waterIndex, -1);
 	UpdateList::addNode(&beach);
+
+	//printUniqueSquares(&grid);
 
 	//Add overlapping tree middles
 	TileMap treemid(&treeTexture, 16, 16, &treetopMap, TREES, 2);
@@ -58,6 +62,8 @@ int main() {
 	UpdateList::staticLayer(TREES);
 	UpdateList::staticLayer(INPUT);
 	UpdateList::setCamera(&player, sf::Vector2f(450, 250));
+
+	DEBUGLAYERS;
 
 	UpdateList::startEngine("IneffableIslands");
 	return 0;

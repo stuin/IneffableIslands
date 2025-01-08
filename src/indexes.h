@@ -13,8 +13,8 @@ enum CollisionLayer {
 static const std::map<int, int> displayIndex = {
 	{' ', 0},
 	{'~', 0},
-	{'w', 2},
-	{'W', 2},
+	{'w', 3},
+	{'W', 3},
 	{',', 0},
 	{'.', 1},
 	{'_', 2},
