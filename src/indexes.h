@@ -19,8 +19,10 @@ static const std::map<int, int> displayIndex = {
 	{'.', 1},
 	{'_', 2},
 	{'-', 3},
+	{'d', 4},
 	{'t', 1},
-	{'T', 2}
+	{'T', 2},
+	{'p', 3}
 };
 
 static const std::map<int, int> rotationIndex = {
@@ -39,14 +41,17 @@ static const std::map<int, int> collisionIndex = {
 	{'.', EMPTY},
 	{'_', EMPTY},
 	{'-', EMPTY},
+	{'d', EMPTY},
 	{'t', FULL},
-	{'T', FULL}
+	{'T', FULL},
+	{'p', FULL}
 };
 
 static const std::map<int, int> treetopIndex = {
 	{' ', -1},
 	{'t', 1},
-	{'T', 0}
+	{'T', 0},
+	{'p', 2}
 };
 
 static const std::map<int, int> waterIndex = {
@@ -54,4 +59,10 @@ static const std::map<int, int> waterIndex = {
 	{'~', 0},
 	{'w', 0},
 	{'W', 1}
+};
+
+static const std::map<int, int> genRemapIndex = {
+	{'t', '.'},
+	{'T', '_'},
+	{'p', '-'}
 };

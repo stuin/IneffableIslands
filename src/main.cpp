@@ -4,6 +4,7 @@
 
 #include "Skyrmion/tiling/TileMap.hpp"
 #include "Skyrmion/tiling/TileFilters.hpp"
+#include "Skyrmion/tiling/SquareTiles.h"
 #include "indexes.h"
 #include "Player.hpp"
 
@@ -23,17 +24,19 @@ int main() {
 
 	//Load base tile maps
 	GridMaker grid("res/test_island.txt");
-	Indexer *beachIndexer = new RandomIndexer(new MapIndexer(&grid, displayIndex, 0), rotationIndex, 0, 4);
+	Indexer *beachIndexer = new RandomIndexer(new MapIndexer(&grid, displayIndex, 0), rotationIndex, 0, 6);
 	TileMap beach(&beachTexture, 16, 16, beachIndexer, MAP);
 	MapIndexer collisionMap(&grid, collisionIndex, 0, 16, 16);
 	MapIndexer treetopMap(&grid, treetopIndex, -1);
 	MapIndexer waterMap(&grid, waterIndex, -1);
 	UpdateList::addNode(&beach);
 
-	//printUniqueSquares(&grid);
+	MapIndexer genMap(&grid, genRemapIndex, -1, 1, 1, true);
+	//printUniqueSquares(&genMap);
+	//readSquareFile("res/allsquares.txt");
 
 	//Add overlapping tree middles
-	TileMap treemid(&treeTexture, 16, 16, &treetopMap, TREES, 2);
+	TileMap treemid(&treeTexture, 16, 16, &treetopMap, TREES, 4);
 	treemid.setPosition(0, -4);
 	UpdateList::addNode(&treemid);
 
