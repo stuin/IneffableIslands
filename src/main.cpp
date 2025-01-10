@@ -2,13 +2,13 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
+#include "Skyrmion/debug/DebugTools.hpp"
+
 #include "Skyrmion/tiling/TileMap.hpp"
 #include "Skyrmion/tiling/TileFilters.hpp"
 #include "Skyrmion/tiling/SquareTiles.h"
 #include "indexes.h"
 #include "Player.hpp"
-
-#include "Skyrmion/debug/DebugLayers.hpp"
 
 int main() {
 	//Load settings file
@@ -16,26 +16,28 @@ int main() {
 
 	//Load tilemap textures
 	sf::Texture beachTexture;
-	sf::Texture treeTexture;
 	sf::Texture waterTexture;
+	sf::Texture treeTexture;
+	sf::Texture flowerTexture;
 	UpdateList::loadTexture(&beachTexture, "res/beachtiles.png");
-	UpdateList::loadTexture(&treeTexture, "res/trees.png");
 	UpdateList::loadTexture(&waterTexture, "res/water.png");
+	UpdateList::loadTexture(&treeTexture, "res/trees.png");
+	UpdateList::loadTexture(&flowerTexture, "res/flowers.png");
 
 	//Load base tile maps
 	GridMaker grid("res/test_island.txt");
-	Indexer *beachIndexer = new RandomIndexer(new MapIndexer(&grid, displayIndex, 0), rotationIndex, 0, 6);
+	Indexer *beachIndexer = new RandomIndexer(new MapIndexer(&grid, displayIndex, 0), rotationRandomIndex, 0, 6);
 	TileMap beach(&beachTexture, 16, 16, beachIndexer, MAP);
 	MapIndexer collisionMap(&grid, collisionIndex, 0, 16, 16);
-	MapIndexer treetopMap(&grid, treetopIndex, -1);
-	MapIndexer waterMap(&grid, waterIndex, -1);
 	UpdateList::addNode(&beach);
 
-	MapIndexer genMap(&grid, genRemapIndex, -1, 1, 1, true);
-	//printUniqueSquares(&genMap);
-	//readSquareFile("res/allsquares.txt");
+	//Add animated water texture
+	MapIndexer waterMap(&grid, waterIndex, -1);
+	AnimatedTileMap water(&waterTexture, 16, 16, &waterMap, 4, 0.8, WATER);
+	UpdateList::addNode(&water);
 
 	//Add overlapping tree middles
+	MapIndexer treetopMap(&grid, treetopIndex, -1);
 	TileMap treemid(&treeTexture, 16, 16, &treetopMap, TREES, 4);
 	treemid.setPosition(0, -4);
 	UpdateList::addNode(&treemid);
@@ -45,9 +47,15 @@ int main() {
 	treetop.setPosition(0, -20);
 	UpdateList::addNode(&treetop);
 
-	//Add animated water texture
-	AnimatedTileMap water(&waterTexture, 16, 16, &waterMap, 4, 0.8, WATER);
-	UpdateList::addNode(&water);
+	//Add random flowers
+	Indexer *flowerIndexer = new RandomIndexer(new MapIndexer(&grid, flowerIndex, -1), flowerRandomIndex, -1);
+	TileMap flowers(&flowerTexture, 16, 16, flowerIndexer, FLOWERS);
+	UpdateList::addNode(&flowers);
+
+	//WIP random generation
+	MapIndexer genMap(&grid, genRemapIndex, -1, 1, 1, true);
+	//printUniqueSquares(&genMap);
+	//readSquareFile("res/allsquares.txt");
 
 	//Load node textures
 	sf::Texture playerTexture;
@@ -66,7 +74,7 @@ int main() {
 	UpdateList::staticLayer(INPUT);
 	UpdateList::setCamera(&player, sf::Vector2f(450, 250));
 
-	DEBUGLAYERS;
+	DEBUGTOOLS;
 
 	UpdateList::startEngine("IneffableIslands");
 	return 0;
