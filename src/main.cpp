@@ -5,7 +5,7 @@
 #include "Skyrmion/debug/DebugTools.hpp"
 
 #include "Skyrmion/tiling/TileMap.hpp"
-#include "Skyrmion/tiling/TileFilters.hpp"
+#include "Skyrmion/tiling/RandomNoise.hpp"
 #include "Skyrmion/tiling/SquareTiles.h"
 #include "indexes.h"
 #include "Player.hpp"
@@ -26,7 +26,10 @@ int main() {
 
 	//Load base tile maps
 	GridMaker grid("res/test_island.txt");
-	Indexer *beachIndexer = new RandomIndexer(new MapIndexer(&grid, displayIndex, 0), rotationRandomIndex, 0, 6);
+	noise::module::Perlin rotateNoise;
+	rotateNoise.SetSeed(1);
+	rotateNoise.SetFrequency(2.1);
+	NoiseIndexer *beachIndexer = new NoiseIndexer(new MapIndexer(&grid, displayIndex, 0), rotationRandomIndex, &rotateNoise, 6);
 	TileMap beach(&beachTexture, 16, 16, beachIndexer, MAP);
 	MapIndexer collisionMap(&grid, collisionIndex, 0, 16, 16);
 	UpdateList::addNode(&beach);
@@ -48,14 +51,52 @@ int main() {
 	UpdateList::addNode(&treetop);
 
 	//Add random flowers
-	Indexer *flowerIndexer = new RandomIndexer(new MapIndexer(&grid, flowerIndex, -1), flowerRandomIndex, -1);
+	RandomIndexer *flowerIndexer = new RandomIndexer(new MapIndexer(&grid, flowerIndex, -1), flowerRandomIndex);
 	TileMap flowers(&flowerTexture, 16, 16, flowerIndexer, FLOWERS);
+	flowers.setPosition(0,-4);
 	UpdateList::addNode(&flowers);
 
 	//WIP random generation
 	MapIndexer genMap(&grid, genRemapIndex, -1, 1, 1, true);
 	//printUniqueSquares(&genMap);
 	//readSquareFile("res/allsquares.txt");
+
+	//libnoise test map
+	noise::module::Perlin testNoise;
+	testNoise.SetSeed(time(0));
+	testNoise.SetFrequency(2.1);
+	//testNoise.SetPersistence(1.0);
+	//testNoise.SetLacunarity(3.5);
+	//testNoise.SetOctaveCount(12);
+	//noise::module::Checkerboard checkerNoise;
+	//noise::module::Add addNoise;
+	//addNoise.SetSourceModule(0, testNoise);
+	//addNoise.SetSourceModule(1, checkerNoise);
+
+	int testSize = 20;
+	int testDivisions = 4;
+	NoiseIndexer *randomIndexer = new NoiseIndexer(new ConstIndexer(0, testSize, testSize),
+		new ConstIndexer(testDivisions, testSize, testSize), &testNoise, 100 / testDivisions);
+	//RandomIndexer *randomIndexer = new RandomIndexer(new ConstIndexer(0, testSize, testSize),
+	//	new ConstIndexer(testDivisions, testSize, testSize), 100 / testDivisions);
+
+	sf::Texture debugMapTexture;
+	UpdateList::loadTexture(&debugMapTexture, "src/Skyrmion/res/heatmapG.png");
+	TileMap debugNoise(&debugMapTexture, 1, 1, randomIndexer, NOISEMAP);
+	debugNoise.setScale(5,5);
+	UpdateList::addNode(&debugNoise);
+	UpdateList::hideLayer(NOISEMAP);
+
+	int counters[testDivisions] = {0};
+	randomIndexer->mapGrid([&counters, testDivisions](int c, sf::Vector2f pos) {
+		counters[c/ (100/testDivisions)]++;
+	});
+	int sum = 0;
+	for(int c : counters) {
+		std::cout << c << "\n";
+		sum += c;
+	}
+	std::cout << sum << "\n";
 
 	//Load node textures
 	sf::Texture playerTexture;

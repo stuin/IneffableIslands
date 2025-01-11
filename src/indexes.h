@@ -8,6 +8,7 @@ enum CollisionLayer {
 	FLOWERS,
 	PLAYER,
 	TREES,
+	NOISEMAP,
 	INPUT,
 };
 

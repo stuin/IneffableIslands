@@ -11,6 +11,7 @@ public:
 	}
 
 	void update(double time) {
-		setPosition(topDownMovement(this, input.getMovement(time * 48), collisionMap));
+		//setPosition(topDownMovement(this, input.getMovement(time * 48), collisionMap));
+		setPosition(getPosition()+input.getMovement(time * 60));
 	}
 };
