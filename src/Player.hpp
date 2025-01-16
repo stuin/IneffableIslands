@@ -1,4 +1,5 @@
 #include "Skyrmion/input/MovementSystems.h"
+#include "Skyrmion/input/InputHandler.h"
 
 class Player : public Node {
 	Indexer *collisionMap;

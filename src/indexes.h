@@ -2,14 +2,32 @@
 
 #include "Skyrmion/input/MovementEnums.h"
 
-enum CollisionLayer {
+enum LAYERS {
 	MAP,
 	WATER,
 	FLOWERS,
 	PLAYER,
 	TREES,
-	NOISEMAP,
-	INPUT,
+	INPUT
+};
+static std::vector<std::string> LAYER_NAMES = {
+	"MAP", "WATER", "FLOWERS", "PLAYER", "TREES", "INPUT"
+};
+
+enum TEXTURES {
+	TEXTURE_PLAYER,
+	TEXTURE_BEACH_TILES,
+	TEXTURE_WATER_TILES,
+	TEXTURE_TREE_TILES,
+	TEXTURE_FLOWER_TILES,
+	TEXTURE_DEBUG_HEATMAP
+};
+static std::vector<std::string> TEXTURE_FILES = {
+	"res/player.png",
+	"res/beachtiles.png",
+	"res/water.png",
+	"res/trees.png",
+	"res/flowers.png"
 };
 
 /*

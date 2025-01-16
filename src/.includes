@@ -1,4 +1,5 @@
-buildargs3=-lsfml-graphics -lsfml-window -lsfml-system -lX11 -lnoise
-files=./*.cpp Skyrmion/*/*.cpp
+buildargs1=-Wno-unused-function
+buildargs3=-lsfml-system -lGL -ldl -lm -lglfw -lX11 -lasound -lXi -lXcursor -lnoise
+files=./*.cpp Skyrmion/*/*.cpp Skyrmion/include/imgui/*.cpp
 
 testdir=../
