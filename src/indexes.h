@@ -15,19 +15,22 @@ static std::vector<std::string> LAYER_NAMES = {
 };
 
 enum TEXTURES {
+	TEXTURE_INVALID,
 	TEXTURE_PLAYER,
 	TEXTURE_BEACH_TILES,
 	TEXTURE_WATER_TILES,
 	TEXTURE_TREE_TILES,
 	TEXTURE_FLOWER_TILES,
-	TEXTURE_DEBUG_HEATMAP
+	BUFFER_BEACH_TILES
 };
 static std::vector<std::string> TEXTURE_FILES = {
+	"#INVALID",
 	"res/player.png",
 	"res/beachtiles.png",
 	"res/water.png",
 	"res/trees.png",
-	"res/flowers.png"
+	"res/flowers.png",
+	"#BUFFER_BEACH"
 };
 
 /*

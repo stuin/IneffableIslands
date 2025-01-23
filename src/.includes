@@ -1,5 +1,12 @@
-buildargs1=-Wno-unused-function
-buildargs3=-lsfml-system -lGL -ldl -lm -lglfw -lX11 -lasound -lXi -lXcursor -lnoise
-files=./*.cpp Skyrmion/*/*.cpp Skyrmion/include/imgui/*.cpp
+buildargs1=-Wno-unused-function -DBACKWARD_HAS_BFD=1
+
+files=./*.cpp Skyrmion/*/*.cpp Skyrmion/include/imgui/*.cpp Skyrmion/include/backward-cpp/backward.cpp Skyrmion/include/rlImGui/rlImGui.cpp
+
+#sokol
+#buildargs3=-lGL -ldl -lm -lglfw -lX11 -lasound -lXi -lXcursor -lnoise -lbfd -ldl
+
+#raylib
+buildargs3=-lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -lnoise -lbfd -ldl
+
 
 testdir=../

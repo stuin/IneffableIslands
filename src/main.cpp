@@ -1,6 +1,7 @@
 #include "Skyrmion/core/UpdateList.h"
 #include "Skyrmion/tiling/TileMap.hpp"
 #include "Skyrmion/tiling/RandomNoise.hpp"
+#include "Skyrmion/util/BufferNode.hpp"
 //#include "Skyrmion/tiling/SquareTiles.h"
 #include "indexes.h"
 #include "Player.hpp"
@@ -16,7 +17,7 @@ void initialize() {
 	rotateNoise.SetFrequency(2.1);
 	NoiseIndexer *beachIndexer = new NoiseIndexer(new MapIndexer(&grid, displayIndex, 0), rotationRandomIndex, &rotateNoise, 6);
 	//Indexer *beachIndexer = new ConstIndexer(1, 25, 25);
-	TileMap beach(TEXTURE_BEACH_TILES, 16, 16, beachIndexer, MAP);
+	BufferNode beach(BUFFER_BEACH_TILES, new TileMap(TEXTURE_BEACH_TILES, 16, 16, beachIndexer, MAP));
 	MapIndexer collisionMap(&grid, collisionIndex, 0, 16, 16);
 	UpdateList::addNode(&beach);
 
@@ -49,26 +50,25 @@ void initialize() {
 
 	//Player
 	Player player(&collisionMap);
-	player.setPosition(sf::Vector2f(16*16, 16*16));
+	player.setPosition(Vector2f(16*16, 16*16));
 	player.setTexture(TEXTURE_PLAYER);
 	UpdateList::addNode(&player);
 
 	//Finish engine setup
-	UpdateList::staticLayer(MAP);
-	UpdateList::staticLayer(PLAYER);
-	UpdateList::staticLayer(TREES);
-	UpdateList::staticLayer(INPUT);
-	UpdateList::setCamera(&player, sf::Vector2f(450, 250));
+	UpdateList::globalLayer(PLAYER);
+	UpdateList::globalLayer(INPUT);
+	UpdateList::setCamera(&player, Vector2f(450, 250));
 
 	UpdateList::startEngine();
 }
 
-std::string windowTitle() {
-	return "Ineffable Islands";
+std::string TITLE = "Ineffable Islands";
+std::string *windowTitle() {
+	return &TITLE;
 }
 
-Color backgroundColor() {
-	return Color(0,150,255);
+skColor backgroundColor() {
+	return skColor(0,150,255);
 }
 
 std::vector<std::string> &textureFiles() {
