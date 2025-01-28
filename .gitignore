@@ -3,6 +3,11 @@
 *.exe
 *.out
 
+*.data
+*.html
+*.js
+*.wasm
+
 *.zip
 *.cache
 

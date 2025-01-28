@@ -2,6 +2,7 @@
 #include "Skyrmion/tiling/TileMap.hpp"
 #include "Skyrmion/tiling/RandomNoise.hpp"
 #include "Skyrmion/util/BufferNode.hpp"
+#include "Skyrmion/debug/GridEditor.hpp"
 //#include "Skyrmion/tiling/SquareTiles.h"
 #include "indexes.h"
 #include "Player.hpp"
@@ -54,6 +55,9 @@ void initialize() {
 	player.setTexture(TEXTURE_PLAYER);
 	UpdateList::addNode(&player);
 
+	addGridEditor("Grid Editor", &grid, FloatRect(0,0,beach.getSize().x,beach.getSize().y),
+		tileNames, TEXTURE_BEACH_TILES, GRIDEDITOR);
+
 	//Finish engine setup
 	UpdateList::globalLayer(PLAYER);
 	UpdateList::globalLayer(INPUT);
@@ -76,12 +80,4 @@ std::vector<std::string> &textureFiles() {
 }
 std::vector<std::string> &layerNames() {
 	return LAYER_NAMES;
-}
-
-void gameImguiMenu() {
-
-}
-
-void gameImgui() {
-
 }

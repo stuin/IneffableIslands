@@ -8,10 +8,11 @@ enum LAYERS {
 	FLOWERS,
 	PLAYER,
 	TREES,
-	INPUT
+	INPUT,
+	GRIDEDITOR
 };
 static std::vector<std::string> LAYER_NAMES = {
-	"MAP", "WATER", "FLOWERS", "PLAYER", "TREES", "INPUT"
+	"MAP", "WATER", "FLOWERS", "PLAYER", "TREES", "INPUT", "EDITOR"
 };
 
 enum TEXTURES {
@@ -33,21 +34,21 @@ static std::vector<std::string> TEXTURE_FILES = {
 	"#BUFFER_BEACH"
 };
 
-/*
-~ = shallow water with sand
-w = shallow water with rock
-W = deep water with rock
-, = sand
-. = light grass
-_ = dark grass
-- = rock
-d = dock/path
-f = flower with light grass
-F = flower with dark grass
-t = palm tree with light grass
-T = full tree with dark grass
-p = pillar with rock
-*/
+static const std::map<int, std::string> tileNames = {
+	{'~', "shallow water with sand"},
+	{'w', "shallow water with rock"},
+	{'W', "deep water with rock"},
+	{',', "sand"},
+	{'.', "light grass"},
+	{'_', "dark grass"},
+	{'-', "rock"},
+	{'d', "dock/path"},
+	{'f', "flower with light grass"},
+	{'F', "flower with dark grass"},
+	{'t', "palm tree with light grass"},
+	{'T', "full tree with dark grass"},
+	{'p', "pillar with rock"}
+};
 
 static const std::map<int, int> displayIndex = {
 	{' ', -1},

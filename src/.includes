@@ -6,7 +6,7 @@ files=./*.cpp Skyrmion/*/*.cpp Skyrmion/include/imgui/*.cpp Skyrmion/include/bac
 #buildargs3=-lGL -ldl -lm -lglfw -lX11 -lasound -lXi -lXcursor -lnoise -lbfd -ldl
 
 #raylib
-buildargs3=-lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -lnoise -lbfd -ldl
+buildargs3=-lnoise -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -lbfd -ldl
 
 
 testdir=../
