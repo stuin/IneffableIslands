@@ -22,6 +22,7 @@ enum TEXTURES {
 	TEXTURE_WATER_TILES,
 	TEXTURE_TREE_TILES,
 	TEXTURE_FLOWER_TILES,
+	TEXTURE_JOYSTICK,
 	BUFFER_BEACH_TILES
 };
 static std::vector<std::string> TEXTURE_FILES = {
@@ -31,6 +32,7 @@ static std::vector<std::string> TEXTURE_FILES = {
 	"res/water.png",
 	"res/trees.png",
 	"res/flowers.png",
+	"res/touchscreen_joystick.png",
 	"#BUFFER_BEACH"
 };
 

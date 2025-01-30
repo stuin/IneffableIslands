@@ -7,7 +7,7 @@ class Player : public Node {
 
 public:
 	Player(Indexer *_collisionMap) : Node(PLAYER), collisionMap(_collisionMap),
-	input("/movement", INPUT, this) {
+	input("/movement", INPUT, TEXTURE_JOYSTICK, this) {
 
 	}
 
