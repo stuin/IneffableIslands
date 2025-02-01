@@ -9,10 +9,11 @@ enum LAYERS {
 	PLAYER,
 	TREES,
 	INPUT,
-	GRIDEDITOR
+	GRIDEDITOR,
+	TOUCHSCREENINPUT
 };
 static std::vector<std::string> LAYER_NAMES = {
-	"MAP", "WATER", "FLOWERS", "PLAYER", "TREES", "INPUT", "EDITOR"
+	"MAP", "WATER", "FLOWERS", "PLAYER", "TREES", "INPUT", "EDITOR", "TOUCHSCREENINPUT"
 };
 
 enum TEXTURES {
@@ -32,7 +33,7 @@ static std::vector<std::string> TEXTURE_FILES = {
 	"res/water.png",
 	"res/trees.png",
 	"res/flowers.png",
-	"res/touchscreen_joystick.png",
+	"res/debug/touchscreen_joystick.png",
 	"#BUFFER_BEACH"
 };
 

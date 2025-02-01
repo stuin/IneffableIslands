@@ -3,6 +3,7 @@
 #include "Skyrmion/tiling/RandomNoise.hpp"
 #include "Skyrmion/util/BufferNode.hpp"
 #include "Skyrmion/debug/GridEditor.hpp"
+#include "Skyrmion/input/Settings.h"
 //#include "Skyrmion/tiling/SquareTiles.h"
 #include "indexes.h"
 #include "Player.hpp"
@@ -61,6 +62,7 @@ void initialize() {
 	//Finish engine setup
 	UpdateList::globalLayer(PLAYER);
 	UpdateList::globalLayer(INPUT);
+	UpdateList::globalLayer(TOUCHSCREENINPUT);
 	UpdateList::setCamera(&player, Vector2f(450, 250));
 
 	UpdateList::startEngine();
