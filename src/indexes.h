@@ -1,19 +1,22 @@
 #pragma once
 
 #include "Skyrmion/input/MovementEnums.h"
+#include "Skyrmion/tiling/GridMaker.h"
 
 enum LAYERS {
+	BUFFERMAP,
 	MAP,
 	WATER,
-	FLOWERS,
+	OTHERPLAYERS,
 	PLAYER,
 	TREES,
 	INPUT,
 	GRIDEDITOR,
-	TOUCHSCREENINPUT
+	TOUCHSCREENINPUT,
+	TESTTEXT
 };
 static std::vector<std::string> LAYER_NAMES = {
-	"MAP", "WATER", "FLOWERS", "PLAYER", "TREES", "INPUT", "EDITOR", "TOUCHSCREENINPUT"
+	"BUFFERMAP", "MAP", "WATER", "OTHERS", "PLAYER", "TREES", "INPUT", "EDITOR", "TOUCHSCREENINPUT", "TESTTEXT"
 };
 
 enum TEXTURES {
@@ -24,16 +27,18 @@ enum TEXTURES {
 	TEXTURE_TREE_TILES,
 	TEXTURE_FLOWER_TILES,
 	TEXTURE_JOYSTICK,
+	TEXTURE_FONT,
 	BUFFER_BEACH_TILES
 };
 static std::vector<std::string> TEXTURE_FILES = {
 	"#INVALID",
-	"res/player.png",
+	"res/Small_8_Direction_Characters_by_AxulArt/Small-8-Direction-Characters_by_AxulArt.png",
 	"res/beachtiles.png",
 	"res/water.png",
 	"res/trees.png",
 	"res/flowers.png",
 	"res/debug/touchscreen_joystick.png",
+	"res/DejaVuSansMono.png",
 	"#BUFFER_BEACH"
 };
 
@@ -124,3 +129,5 @@ static const std::map<int, int> genRemapIndex = {
 	{'T', '_'},
 	{'p', '-'}
 };
+
+void initializePlayer(Indexer *collisionMap);

@@ -1,12 +1,10 @@
 #include "Skyrmion/core/UpdateList.h"
 #include "Skyrmion/tiling/TileMap.hpp"
 #include "Skyrmion/tiling/RandomNoise.hpp"
-#include "Skyrmion/util/BufferNode.hpp"
 #include "Skyrmion/debug/GridEditor.hpp"
 #include "Skyrmion/input/Settings.h"
 //#include "Skyrmion/tiling/SquareTiles.h"
 #include "indexes.h"
-#include "Player.hpp"
 
 void initialize() {
 	//Load settings file
@@ -19,9 +17,23 @@ void initialize() {
 	rotateNoise.SetFrequency(2.1);
 	NoiseIndexer *beachIndexer = new NoiseIndexer(new MapIndexer(&grid, displayIndex, 0), rotationRandomIndex, &rotateNoise, 6);
 	//Indexer *beachIndexer = new ConstIndexer(1, 25, 25);
-	BufferNode beach(BUFFER_BEACH_TILES, new TileMap(TEXTURE_BEACH_TILES, 16, 16, beachIndexer, MAP));
+	TileMap beach(TEXTURE_BEACH_TILES, BUFFER_BEACH_TILES, 16, 16, beachIndexer, BUFFERMAP);
 	MapIndexer collisionMap(&grid, collisionIndex, 0, 16, 16);
 	UpdateList::addNode(&beach);
+
+	//Add random flowers
+	RandomIndexer *flowerIndexer = new RandomIndexer(new MapIndexer(&grid, flowerIndex, -1), flowerRandomIndex);
+	TileMap flowers(TEXTURE_FLOWER_TILES, BUFFER_BEACH_TILES, 16, 16, flowerIndexer, BUFFERMAP);
+	flowers.setPosition(0,4);
+	flowers.setColor(COLOR_NONE);
+	UpdateList::scheduleReload(&flowers);
+	UpdateList::addNode(&flowers);
+
+	//Display buffers
+	Node beachBuffered(MAP, beach.getSize());
+	beachBuffered.setTexture(BUFFER_BEACH_TILES);
+	beachBuffered.setOrigin(beach.getOrigin());
+	UpdateList::addNode(&beachBuffered);
 
 	//Add animated water texture
 	MapIndexer waterMap(&grid, waterIndex, -1);
@@ -30,42 +42,48 @@ void initialize() {
 
 	//Add overlapping tree middles
 	MapIndexer treetopMap(&grid, treetopIndex, -1);
-	TileMap treemid(TEXTURE_TREE_TILES, 16, 16, &treetopMap, TREES, 4);
+	TileMap treemid(TEXTURE_TREE_TILES, 0, 16, 16, &treetopMap, TREES, 4);
 	treemid.setPosition(0, -4);
 	UpdateList::addNode(&treemid);
 
 	//Add overlapping tree tops
-	TileMap treetop(TEXTURE_TREE_TILES, 16, 16, &treetopMap, TREES);
+	TileMap treetop(TEXTURE_TREE_TILES, 0, 16, 16, &treetopMap, TREES);
 	treetop.setPosition(0, -20);
 	UpdateList::addNode(&treetop);
-
-	//Add random flowers
-	RandomIndexer *flowerIndexer = new RandomIndexer(new MapIndexer(&grid, flowerIndex, -1), flowerRandomIndex);
-	TileMap flowers(TEXTURE_FLOWER_TILES, 16, 16, flowerIndexer, FLOWERS);
-	flowers.setPosition(0,-4);
-	UpdateList::addNode(&flowers);
 
 	//WIP random generation
 	//MapIndexer genMap(&grid, genRemapIndex, -1, 1, 1, true);
 	//printUniqueSquares(&genMap);
 	//readSquareFile("res/allsquares.txt");
 
-	//Player
-	Player player(&collisionMap);
-	player.setPosition(Vector2f(16*16, 16*16));
-	player.setTexture(TEXTURE_PLAYER);
-	UpdateList::addNode(&player);
+	//Test text
+	std::string textS = "Hello World";
+	GridMaker textGrid(textS.length(), 1);
+	for(sint i = 0; i < textS.length(); i++)
+		textGrid.setTileI(i, 0, textS[i]);
+	TileMap textMap(TEXTURE_FONT, 0, 17, 29, new MapIndexer(&textGrid, TileMap::FONT_SPRITEMAP, -1), TESTTEXT);
+	UpdateList::addNode(&textMap);
+	UpdateList::hideLayer(TESTTEXT);
 
-	addGridEditor("Grid Editor", &grid, FloatRect(0,0,beach.getSize().x,beach.getSize().y),
-		tileNames, TEXTURE_BEACH_TILES, GRIDEDITOR);
+	UpdateList::connectServer(Settings::getString("/server/ip"), Settings::getInt("/server/port"));
 
 	//Finish engine setup
+	UpdateList::globalLayer(BUFFERMAP);
+	UpdateList::hideLayer(BUFFERMAP);
+	UpdateList::globalLayer(OTHERPLAYERS);
 	UpdateList::globalLayer(PLAYER);
 	UpdateList::globalLayer(INPUT);
+	UpdateList::hideLayer(INPUT);
 	UpdateList::globalLayer(TOUCHSCREENINPUT);
-	UpdateList::setCamera(&player, Vector2f(450, 250));
 
-	UpdateList::startEngine();
+	#ifdef _DEBUG
+	    setupDebugTools();
+	#endif
+
+	addGridEditor("Grid Editor", "res/temp_grid.txt", "res/test_island.txt", &grid, FloatRect(0,0,beachBuffered.getSize().x,beachBuffered.getSize().y),
+		tileNames, TEXTURE_BEACH_TILES, GRIDEDITOR);
+
+	initializePlayer(&collisionMap);
 }
 
 std::string TITLE = "Ineffable Islands";
@@ -82,4 +100,8 @@ std::vector<std::string> &textureFiles() {
 }
 std::vector<std::string> &layerNames() {
 	return LAYER_NAMES;
+}
+
+void recieveNetworkString(std::string data, int code) {
+	std::cout << "NETWORK: Received string " << data << "\n";
 }
