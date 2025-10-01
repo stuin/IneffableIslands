@@ -2,6 +2,7 @@
 #include "Skyrmion/input/InputHandler.h"
 #include "Skyrmion/input/TouchscreenInput.hpp"
 #include "Skyrmion/input/Settings.h"
+#include "Skyrmion/util/AnimatedNode.hpp"
 
 #include "indexes.h"
 
@@ -26,7 +27,8 @@ public:
 		//if(distance(movement) > 0.1) {
 			direction = topDownDirection(movement);
 
-			if(timer.next(time) == 3)
+			timer.next(time);
+			if(timer.frame == 3)
 				setTextureVecRect(16 * direction, 24*(2+variant*4));
 			else
 				setTextureVecRect(16 * direction, 24*(timer.frame+1+variant*4));

@@ -1,4 +1,4 @@
-buildargs1=-Wno-unused-function -DBACKWARD_HAS_BFD=1
+buildargs1=-Wno-unused-function -DBACKWARD_HAS_BFD=1 -DPLATFORM_DESKTOP=1
 
 #raylib
 files=./*.cpp Skyrmion/*/*.cpp Skyrmion/core/backend/RaylibUpdateList.cpp Skyrmion/core/backend/nbnetClient.cpp Skyrmion/include/imgui/*.cpp Skyrmion/include/backward-cpp/backward.cpp Skyrmion/include/rlImGui/rlImGui.cpp

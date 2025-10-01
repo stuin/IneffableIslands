@@ -4,8 +4,8 @@
 #include "Skyrmion/tiling/GridMaker.h"
 
 enum LAYERS {
-	BUFFERMAP,
 	MAP,
+	FLOWERS,
 	WATER,
 	OTHERPLAYERS,
 	PLAYER,
@@ -16,7 +16,7 @@ enum LAYERS {
 	TESTTEXT
 };
 static std::vector<std::string> LAYER_NAMES = {
-	"BUFFERMAP", "MAP", "WATER", "OTHERS", "PLAYER", "TREES", "INPUT", "EDITOR", "TOUCHSCREENINPUT", "TESTTEXT"
+	"MAP", "FLOWERS", "WATER", "OTHERS", "PLAYER", "TREES", "INPUT", "EDITOR", "TOUCHSCREENINPUT", "TESTTEXT"
 };
 
 enum TEXTURES {
@@ -28,7 +28,8 @@ enum TEXTURES {
 	TEXTURE_FLOWER_TILES,
 	TEXTURE_JOYSTICK,
 	TEXTURE_FONT,
-	BUFFER_BEACH_TILES
+	BUFFER_BEACH_TILES,
+	SHADER_GRAYSCALE
 };
 static std::vector<std::string> TEXTURE_FILES = {
 	"#INVALID",
@@ -39,7 +40,8 @@ static std::vector<std::string> TEXTURE_FILES = {
 	"res/flowers.png",
 	"res/debug/touchscreen_joystick.png",
 	"res/DejaVuSansMono.png",
-	"#BUFFER_BEACH"
+	"#BUFFER_BEACH",
+	"res/shaders/glsl%i/grayscale.fs"
 };
 
 static const std::map<int, std::string> tileNames = {
