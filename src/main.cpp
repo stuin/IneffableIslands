@@ -26,7 +26,7 @@ void initialize() {
 	RandomIndexer *flowerIndexer = new RandomIndexer(new MapIndexer(&grid, flowerIndex, -1), flowerRandomIndex);
 	TileMap flowers(TEXTURE_FLOWER_TILES, 16, 16, flowerIndexer, FLOWERS);
 	flowers.setPosition(0,4);
-	flowers.setColor(COLOR_NONE);
+	//flowers.setColor(COLOR_NONE);
 	UpdateList::addNode(&flowers);
 
 	//Add animated water texture
@@ -59,19 +59,28 @@ void initialize() {
 	UpdateList::addNode(&textMap);
 	UpdateList::hideLayer(TESTTEXT);
 
-	UpdateList::connectServer(Settings::getString("/server/ip"), Settings::getInt("/server/port"));
+	//Player color buffer
+	Node playerImage(PLAYERBUFFER, RENDER_TEXTURE_SINGLE);
+	playerImage.setTexture(TEXTURE_PLAYER);
+	playerImage.setSize(playerImage.getTextureSize());
+	playerImage.setScale(1,-1);
+	BufferData playerBuffer(BUFFER_PLAYER, &playerImage, COLOR_EMPTY);
+	playerBuffer.shader = SHADER_PALETTE;
+	UpdateList::createUniform(SHADER_PALETTE, "palette", STARTING_PALETTES[0]);
+	UpdateList::createBuffer(playerBuffer);
+
+	//UpdateList::connectServer(Settings::getString("/server/ip"), Settings::getInt("/server/port"));
 
 	//Finish engine setup
 	UpdateList::globalLayer(OTHERPLAYERS);
 	UpdateList::globalLayer(PLAYER);
-	UpdateList::globalLayer(INPUT);
-	UpdateList::hideLayer(INPUT);
+	UpdateList::hideLayer(PLAYERBUFFER);
 	UpdateList::globalLayer(TOUCHSCREENINPUT);
 
 	//UpdateList::getLayerData(MAP).shader = SHADER_GRAYSCALE;
 
-	//addGridEditor("Grid Editor", "res/temp_grid.txt", "res/test_island.txt", &grid, FloatRect(0,0,beachBuffered.getSize().x,beachBuffered.getSize().y),
-	//	tileNames, TEXTURE_BEACH_TILES, GRIDEDITOR);
+	addGridEditor("Grid Editor", "res/temp_grid.txt", "res/test_island.txt", &grid, FloatRect(Vector2f(0,0), beach.getSize()),
+		tileNames, TEXTURE_BEACH_TILES, GRIDEDITOR);
 
 	initializePlayer(&collisionMap);
 }

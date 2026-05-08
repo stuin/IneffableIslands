@@ -7,8 +7,10 @@
 		"joystick": 1
 	},
 	"playervariant": 2,
+	"playercolor": "#FFFFFF",
 	"server": {
 		"ip": "127.0.0.1",
 		"port": 1234
-	}
+	},
+	"test": true
 }

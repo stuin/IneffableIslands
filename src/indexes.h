@@ -3,21 +3,19 @@
 #include "Skyrmion/input/MovementEnums.h"
 #include "Skyrmion/tiling/GridMaker.h"
 
-enum LAYERS {
-	MAP,
-	FLOWERS,
-	WATER,
-	OTHERPLAYERS,
-	PLAYER,
-	TREES,
-	INPUT,
-	GRIDEDITOR,
-	TOUCHSCREENINPUT,
-	TESTTEXT
-};
-static std::vector<std::string> LAYER_NAMES = {
-	"MAP", "FLOWERS", "WATER", "OTHERS", "PLAYER", "TREES", "INPUT", "EDITOR", "TOUCHSCREENINPUT", "TESTTEXT"
-};
+#define LAYER_FOREACH(E) \
+    E(MAP) \
+    E(FLOWERS) \
+    E(WATER) \
+    E(OTHERPLAYERS) \
+    E(PLAYER) \
+	E(TREES) \
+	E(GRIDEDITOR) \
+	E(TOUCHSCREENINPUT) \
+	E(PLAYERBUFFER) \
+	E(TESTTEXT) \
+
+NAMED_ENUM(LAYER);
 
 enum TEXTURES {
 	TEXTURE_INVALID,
@@ -29,11 +27,13 @@ enum TEXTURES {
 	TEXTURE_JOYSTICK,
 	TEXTURE_FONT,
 	BUFFER_BEACH_TILES,
-	SHADER_GRAYSCALE
+	BUFFER_PLAYER,
+	SHADER_GRAYSCALE,
+	SHADER_PALETTE
 };
 static std::vector<std::string> TEXTURE_FILES = {
 	"#INVALID",
-	"res/Small_8_Direction_Characters_by_AxulArt/Small-8-Direction-Characters_by_AxulArt.png",
+	"res/characters.png",
 	"res/beachtiles.png",
 	"res/water.png",
 	"res/trees.png",
@@ -41,7 +41,9 @@ static std::vector<std::string> TEXTURE_FILES = {
 	"res/debug/touchscreen_joystick.png",
 	"res/DejaVuSansMono.png",
 	"#BUFFER_BEACH",
-	"res/shaders/glsl%i/grayscale.fs"
+	"#BUFFER_PLAYER",
+	"res/shaders/glsl%i/grayscale.fs",
+	"res/shaders/glsl%i/palette_switch.fs"
 };
 
 static const std::map<int, std::string> tileNames = {
@@ -130,6 +132,19 @@ static const std::map<int, int> genRemapIndex = {
 	{'t', '.'},
 	{'T', '_'},
 	{'p', '-'}
+};
+
+static const std::vector<int> STARTING_PALETTES[1] = {
+    {   // Original blue
+        0, 0, 0,
+        116, 223, 245,
+        54, 116, 224,
+        72, 98, 229,
+        0, 0, 0,
+        0, 0, 0,
+        0, 0, 0,
+        0, 0, 0,
+    }
 };
 
 void initializePlayer(Indexer *collisionMap);

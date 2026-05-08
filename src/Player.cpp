@@ -14,10 +14,10 @@ public:
 	int direction = DOWN;
 	int variant = 0;
 
-	PlayerBase(Layer layer, int _variant) : Node(layer, Vector2i(16,24)), timer(4, 0.2) {
+	PlayerBase(int layer, int _variant) : Node(layer, RENDER_TEXTURE_RECT, Vector2i(16,24)), timer(4, 0.2) {
 		variant = _variant;
 
-		setTexture(TEXTURE_PLAYER);
+		setTexture(BUFFER_PLAYER);
 		setTextureVecRect(16 * direction, 24*(1+variant*4));
 	}
 
@@ -51,8 +51,9 @@ private:
 
 public:
 	Player(Indexer *_collisionMap) : PlayerBase(PLAYER, Settings::getInt("/playervariant")), collisionMap(_collisionMap),
-	input("/movement", INPUT, this), joystick(TEXTURE_JOYSTICK, Settings::getInt("/movement/joystick"), TOUCHSCREENINPUT) {
+	input("/movement", -1), joystick(TEXTURE_JOYSTICK, "/movement/joystick", TOUCHSCREENINPUT) {
 
+		UpdateList::addListener(this, EVENT_SETTINGS);
 	}
 
 	void update(double time) {
@@ -64,12 +65,19 @@ public:
 			send();
 		}
 
+		//UpdateList::setShaderU3Array(SHADER_PALETTE, "palette", STARTING_PALETTES[0]);
+
 		updateAnimation(time, movement);
 	}
 
 	void send() {
 		UpdateList::sendNetworkEvent(Event(EVENT_NETWORK_POSITION, false, UpdateList::getNetworkId(), getPosition()));
 		lastSent = getPosition();
+	}
+
+	void recieveEvent(Event event) {
+		if(event.type == EVENT_SETTINGS)
+			variant = Settings::getInt("/playervariant");
 	}
 };
 
@@ -106,17 +114,17 @@ public:
 };
 
 #define MAX_PLAYERS 4
-class MultiPlayer : public Node {
+class MultiPlayer : public UNode {
 	OtherPlayer players[MAX_PLAYERS];
 	Player *self;
 
 public:
 
-	MultiPlayer(Player *_self) : Node(INPUT), self(_self) {
+	MultiPlayer(Player *_self) : UNode(-2), self(_self) {
 		UpdateList::addListener(this, EVENT_NETWORK_CONNECT_SERVER);
 		UpdateList::addListener(this, EVENT_NETWORK_CONNECT_CLIENT);
 
-		UpdateList::addNode(this);
+		UpdateList::addUNode(this);
 		for(int i = 0; i < MAX_PLAYERS; i++)
 			UpdateList::addNode(&players[i]);
 	}
